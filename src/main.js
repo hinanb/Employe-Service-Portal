@@ -22,7 +22,7 @@ const routes=[
   {path:'/Dashboard', component:DashboardView},
   
   {path:'/BasicDashboard', component:BasicDashboard},
-  {path:'/AddTimeSheets', component:AddTimeSheets},
+  {path:'/AddTimeSheets:week', component:AddTimeSheets, name: "AddTimeSheets", props:true},
   {path:'/ManageTimesheets', component:ManageTimesheets},
   {path:'/LeaveManagment', component:LeaveManagment},
   {path:'/ApplyForLeave', component:ApplyForLeave}

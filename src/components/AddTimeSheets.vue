@@ -12,7 +12,7 @@
   <br> <br><br><br><br><br><br><br><br><br><br><br>
   
   <div class="hours-form">
-    <div class="form-header"><h4 >  Submit Timesheet for {{ weekName }} </h4></div>
+    <div class="form-header"><h4 >  Submit Timesheet for {{ week }} </h4></div>
     <div class="form-body">
       <div class="form-group" v-for="day in daysOfWeek" :key="day">
         <label>{{ day }}</label>
@@ -34,35 +34,39 @@
 import DashboardView from './DashboardView';
 import UserPool from "../cognito/UserPool";
   
-
 export default {
   name : "AddTimeSheets",
   components: {
         DashboardView
   },
+  props: {
+    week: {
+      type: String,
+      required: true
+    }
+    },
+  
   data() {
       
     return {
-      weekName: this.$route.query.weekName,
+      weekName: "",
       daysOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      hours: {},
+      hours: {
+      "Monday": "",
+      "Tuesday": "",
+      "Wednesday": "",
+      "Thursday": "",
+      "Friday": "",
+      "Saturday": "",
+      "Sunday": "",
+    },
       userName: ""
     };
   },
   mounted() {
   
   const user = UserPool.getCurrentUser();
-  this.userName = user["username"];  
-
-  this.hours["Monday"] = "2";
-  console.log(this.hours["Monday"]);
-
-  this.hours = localStorage.getItem(`${this.userName}-${this.weekName}`);
-     
-
-  console.log(this.hours);
-  //console.log('asd');
-  
+  this.userName = user["username"];   
   },
   methods: {
     submitHours() {
@@ -70,8 +74,8 @@ export default {
       const user = UserPool.getCurrentUser();
       this.userName = user["username"];  
 
-      
-      localStorage.setItem(`${this.userName}-${this.weekName}`, JSON.stringify(this.hours));
+      localStorage.setItem(`${this.userName}-${this.week}`, JSON.stringify(this.hours));
+
       this.$router.push('/ManageTimesheets'); 
     }
   }

@@ -4,11 +4,13 @@
     <div class="week-of-month">  {{ weekOfMonth }}</div>
     <div v-if="isTimesheetFilled" class="timesheet-filled">Timesheet Filled</div>
     <div v-else class="timesheet-not-filled">Timesheet Not Filled</div>
-    <router-link v-bind:to="{ path: '/AddTimeSheets', query: { weekName: 'Week 1' } }">   
-    <button v-if="!isTimesheetFilled" class="submit-timesheet-button" @click="submitTimesheet">
-      Submit Timesheet
-    </button>
-    </router-link>
+
+    <router-link :to="'/AddTimeSheets' + weekOfMonth">
+  <button v-if="!isTimesheetFilled" class="submit-timesheet-button" >
+    Submit Timesheet
+  </button>
+</router-link>
+
   </div>
 </template>
 
@@ -20,15 +22,15 @@ export default {
    name: 'TimeSheetStatus',
    components: {    
   },
+  data: () => ({
+    isTimesheetFilled:false
+    }),
   props: {
     weekOfMonth: {
-      type: Number,
+      type: String,
       required: false,
     },
-    isTimesheetFilled: {
-      type: Boolean,
-      required: false,
-    },
+    
   },
   mounted(){
     
@@ -36,8 +38,17 @@ const user = UserPool.getCurrentUser();
 var userName = user["username"];  
 console.log(userName);
 var timesheet =  localStorage.getItem(`${userName}-${this.weekOfMonth}`);
+if(timesheet){
+  this.isTimesheetFilled = true;
+}
+
+
 console.log(timesheet);
-    
+
+
+
+
+
   },
   methods: {
     submitTimesheet() {

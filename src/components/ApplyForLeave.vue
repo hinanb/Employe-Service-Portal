@@ -41,7 +41,7 @@ export default {
       startDate: "",
       endDate: "",
       numDays: "",
-      reason: "",
+      reason: ""
     };
   },
   methods: {
@@ -53,8 +53,16 @@ export default {
         reason: this.reason
       };
       const user = UserPool.getCurrentUser();
-      this.userName = user["username"];  
-      localStorage.setItem(`${this.userName}-Leaves`, JSON.stringify(leaveData));
+      this.userName = user["username"];
+
+
+       var existingEntries = JSON.parse(localStorage.getItem(`${this.userName}-AllLeaves`));
+       if(existingEntries == null) existingEntries = [];
+      localStorage.setItem("leave", JSON.stringify(leaveData));
+      existingEntries.push(leaveData);
+      localStorage.setItem(`${this.userName}-AllLeaves`, JSON.stringify(existingEntries));
+
+      //localStorage.setItem(`${this.userName}-Leaves`, JSON.stringify(leaveData));
       this.$router.push('/LeaveManagment'); 
     },
   },

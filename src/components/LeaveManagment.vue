@@ -8,10 +8,13 @@
   </v-col>
 
   <v-col cols=9>
-  <br><br><br><br><br><br>
-
-  <LeaveStatus vacationsFrom="" vacationsTo="" numberOfDays="1" Approved="true" />
   
+  <br><br><br><br><br><br>
+  
+  <div v-for="leave in this.leaveData" :key="leave.startDate"> 
+  <LeaveStatus :vacationsFrom="leave.startDate" :vacationsTo="leave.endDate" :numberOfDays = "leave.numDays" Approved="Not Approved" />
+
+  </div>
   <div class="text-center">
     <router-link to="/ApplyForLeave">
     <v-btn
@@ -39,11 +42,16 @@ import UserPool from "../cognito/UserPool";
 
 export default {
     name: 'LeaveManagment',
+    
     mounted() {
     const user = UserPool.getCurrentUser();
     var userName = user["username"];  
-    this.leaveData =  localStorage.getItem(`${userName}-Leaves`);
+
+    this.leaveData = JSON.parse(localStorage.getItem(`${userName}-AllLeaves`));
     console.log(this.leaveData);
+
+ 
+
     
     },
 components: {    
@@ -51,7 +59,7 @@ components: {
     LeaveStatus
   },
     data: () => ({
-      leaveData : {}
+      leaveData : []
     }),
     methods:{
 },
